@@ -1,6 +1,15 @@
-subrule.table.rpart<-function(object)  
+#' Returns an unpivoted table of variable values (factor levels) associated with each branch.
+#'
+#'
+#' @param object an rpart object
+#' @export
+#' @examples
+#' library(rpart)
+#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+#' rpart.subrules.table(fit)
+rpart.subrules.table<-function(object)  
 {
-  lists<-lists.rpart(object)
+  lists<-rpart.lists(object)
   leftCompares<-lapply(lists$L,function (x) attr(x,"compare"))
   rightCompares<-lapply(lists$R,function (x) attr(x,"compare"))
   leftRules<-lapply(seq_along(lists$L),function (i) setNames(data.frame(paste('L',i,sep=''),names(lists$L)[i],as.character(unlist(lists$L[i],use.names=FALSE)),NA,NA),c("Subrule","Variable","Value","Less","Greater")))

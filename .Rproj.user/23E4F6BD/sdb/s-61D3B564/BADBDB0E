@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Writes rule tables required to process rpart rules in SQL to an open RODBC connection.\n#'\n#'\n#' @param object an rpart object\n#' @param connection and open RODBC connection\n#' @param prefix A character string to prefix the rules to allow for multiple rule sets\n#' @export\n#' @examples\n#' library(rpart)\n#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)\nrpart.rules.push<-function(object,connection,prefix='')\n{\n  require(RODBC)\n  rules<-rpart.rules.table(object)\n  rules$Rule<-paste(prefix,rules$Rule,sep='.')\n  rules$Subrule<-paste(prefix,rules$Subrule,sep='.')\n  sqlSave(connection,rules,tablename=\"AUTHCLASS_RULES\",append=TRUE,rownames=FALSE)\n  subrules<-rpart.subrules.table(object)\n  subrules$Subrule<-paste(prefix,subrules$Subrule,sep='.')\n  sqlSave(connection,subrules,tablename=\"AUTHCLASS_SUBRULES\",append=TRUE,rownames=FALSE)\n}",
+    "created" : 1400103446936.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "505407494",
+    "id" : "BADBDB0E",
+    "lastKnownWriteTime" : 1400103862,
+    "path" : "~/Analytics/Source/rpart.utils/R/rpart.rules.push.R",
+    "project_path" : "R/rpart.rules.push.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

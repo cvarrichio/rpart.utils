@@ -1,4 +1,13 @@
-rules.rpart<-function(object)
+#' Returns a list of strings summarizing the branch path to each node.
+#'
+#'
+#' @param object an rpart object
+#' @export
+#' @examples
+#' library(rpart)
+#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+#' rpart.rules(fit)
+rpart.rules<-function(object)
 {
   frame<-object$frame
   ruleNums<-as.numeric(row.names(frame))

@@ -1,12 +1,15 @@
-rpart.lists <- function(object, digits = 4, minlength = 1L, pretty,
-                        collapse = TRUE, ...)
+#' Creates lists of variable values (factor levels) associated with each rule in an rpart object.  
+#'
+#'
+#' @param object an rpart object
+#' @return a list of lists
+#' @export
+#' @examples
+#' library(rpart)
+#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+#' rpart.lists(fit)
+rpart.lists <- function(object)
 {
-  if (missing(minlength) && !missing(pretty)) {
-    minlength <- if (is.null(pretty)) 1L
-    else if (is.logical(pretty)) {
-      if (pretty) 4L else 0L
-    } else 0L
-  }
   
   ff <- object$frame
   n <- nrow(ff)
@@ -21,17 +24,7 @@ rpart.lists <- function(object, digits = 4, minlength = 1L, pretty,
   ncat <- object$splits[irow, 2L]
   
   lsplit <- rsplit <- list()
-  #   
-  #   print ("Whichrow = ")
-  #   print(whichrow)
-  #   print("vnames = ")
-  #   print(vnames)
-  #   print("index = ")
-  #   print(index)
-  #   print("irow = ")
-  #   print(irow)
-  #   print("ncat=")
-  #   print(ncat)
+
   
   ## Now to work: first create labels for the left and right splits,
   ##  but not for leaves of course
@@ -63,25 +56,10 @@ rpart.lists <- function(object, digits = 4, minlength = 1L, pretty,
     jrow <- seq_along(ncat)[ncat > 1L]
     crow <- object$splits[irow[ncat > 1L], 4L] #row number in csplit
     cindex <- (match(vnames, names(xlevels)))[ncat > 1L]
-    
-    #     print(jrow)
-    #     print(crow)
-    #     print(cindex)
-    
-    
+
     
     lsplit[jrow]<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==1L])
     rsplit[jrow]<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==3L])
-    
-    #     lsplit<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==1L] )
-    #     names(lsplit)<-names(crow)
-    #     rsplit<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==3L] )
-    #     names(rsplit)<-names(crow)
-    
-    #     combined<-unlist(Map(function(...) list(...),lsplit,rsplit),recursive=FALSE)
-    
-    
-  }
 
   
   lsplit<-lapply(seq_along(lsplit), function (i) structure(lsplit[[i]], "compare"=ifelse(ncat[i]<2L,ifelse(ncat[i]<0,"<",">="),"=")))
@@ -94,4 +72,6 @@ rpart.lists <- function(object, digits = 4, minlength = 1L, pretty,
   results<-list("L"=lsplit,"R"=rsplit)  
   
   return(results)
+}
+
 }
