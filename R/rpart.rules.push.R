@@ -5,9 +5,6 @@
 #' @param connection and open RODBC connection
 #' @param prefix A character string to prefix the rules to allow for multiple rule sets
 #' @export
-#' @examples
-#' library(rpart)
-#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
 rpart.rules.push<-function(object,connection,prefix='')
 {
   require(RODBC)

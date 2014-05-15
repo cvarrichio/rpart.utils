@@ -6,7 +6,7 @@
 #' @export
 #' @examples
 #' library(rpart)
-#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+#' fit<-rpart(Reliability~.,data=car90)
 #' rpart.lists(fit)
 rpart.lists <- function(object)
 {
@@ -44,9 +44,10 @@ rpart.lists <- function(object)
     #rsplit[ncat<2L] <- lapply(rsplit[ncat<2L],function (x) structure(x, 'numeric'=TRUE))
     
   }
+
   
-  
-  if (any(ncat > 1L)) {               # any categorical variables ?
+  if (any(ncat > 1L)) 
+  {               # any categorical variables ?
     xlevels <- attr(object, "xlevels")
     ##
     ## jrow will be the row numbers of factors within lsplit and rsplit
@@ -61,7 +62,9 @@ rpart.lists <- function(object)
     lsplit[jrow]<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==1L])
     rsplit[jrow]<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==3L])
 
-  
+  }
+
+
   lsplit<-lapply(seq_along(lsplit), function (i) structure(lsplit[[i]], "compare"=ifelse(ncat[i]<2L,ifelse(ncat[i]<0,"<",">="),"=")))
   rsplit<-lapply(seq_along(lsplit), function (i) structure(rsplit[[i]], "compare"=ifelse(ncat[i]<2L,ifelse(ncat[i]<0,">=","<"),"=")))
   
@@ -70,8 +73,6 @@ rpart.lists <- function(object)
   names(rsplit)<-vnames
   
   results<-list("L"=lsplit,"R"=rsplit)  
-  
-  return(results)
-}
 
+  return(results)
 }

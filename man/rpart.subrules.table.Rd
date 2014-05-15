@@ -13,7 +13,7 @@ Returns an unpivoted table of variable values (factor levels) associated with ea
 }
 \examples{
 library(rpart)
-fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+fit<-rpart(Reliability~.,data=car90)
 rpart.subrules.table(fit)
 }
 

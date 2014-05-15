@@ -1,0 +1,10 @@
+{
+    "dialog-state" : {
+        "caseSensitive" : false,
+        "filePatterns" : [
+        ],
+        "path" : "~/Analytics/Source/rpart.utils",
+        "query" : "rpart",
+        "regex" : false
+    }
+}

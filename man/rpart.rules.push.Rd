@@ -15,8 +15,4 @@ rpart.rules.push(object, connection, prefix = "")
 \description{
 Writes rule tables required to process rpart rules in SQL to an open RODBC connection.
 }
-\examples{
-library(rpart)
-fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
-}
 

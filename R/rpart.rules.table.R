@@ -5,7 +5,7 @@
 #' @export
 #' @examples
 #' library(rpart)
-#' fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+#' fit<-rpart(Reliability~.,data=car90)
 #' rpart.rules.table(fit)
 rpart.rules.table<-function(object)
 {
@@ -15,10 +15,9 @@ rpart.rules.table<-function(object)
  # print(Reduce(cbind,lapply(ff,identity)))
   ruleList<-lapply(row.names(ff),function (name) setNames(data.frame(name,
                                                                      (strsplit(ff[name,'rules'],split=',')),
-                                                                     ff[name,'yval2'][5],
                                                                      ff[name,'var']=="<leaf>"
                                                                      ),
-                                                          c("Rule","Subrule","Confidence","Leaf")))
+                                                          c("Rule","Subrule","Leaf")))
   combinedRules<-Reduce(rbind,ruleList)
   
   return(combinedRules)
