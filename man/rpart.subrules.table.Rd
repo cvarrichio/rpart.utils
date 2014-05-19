@@ -9,7 +9,79 @@ rpart.subrules.table(object)
 \item{object}{an rpart object}
 }
 \description{
-Returns an unpivoted table of variable values (factor levels) associated with each branch.
+WITH SOURCE AS
+(
+    SELECT
+    ID,
+    TYPE,
+    VALUE
+    FROM DATA
+    UNPIVOT
+    (
+        VALUE FOR TYPE IN (FIELD1, FIELD2, FIELD3)
+    )UNPVT
+),
+MATCHES AS
+(
+    SELECT
+    ID
+    ,Subrule
+    ,Variable
+    ,SR.Value
+    ,Less
+    ,Greater
+    FROM
+    SOURCE S
+    LEFT JOIN SUBRULES SR
+    ON
+    TYPE = VARIABLE
+    AND (
+        S.value = SR.value
+        OR S.value < SR.Less
+        OR S.value > SR.Greater
+        )
+    ),
+MATCHED_SUBRULES
+AS (
+    SELECT
+    Subrule
+    ,ID
+    FROM
+    MATCHES M
+    GROUP BY
+    Subrule
+    ,ID
+    ),
+MATCHED_RULES
+AS (
+    SELECT
+    R.[Rule]
+    ,MS.*
+    FROM
+    RULES AS R
+    LEFT JOIN MATCHED_SUBRULES MS
+    ON R.SUBRULE=MS.SUBRULE AND Leaf='TRUE'
+    )
+,
+COUNTS AS
+(
+    SELECT
+    [RULE]
+    ,ID
+    ,MATCH_COUNT=COUNT(DISTINCT SUBRULE)
+    ,NEEDED_COUNT=(SELECT COUNT(DISTINCT SUBRULE) FROM RULES R WHERE R.[RULE]=MR.[RULE])
+    FROM
+    MATCHED_RULES MR
+    GROUP BY
+    [RULE]
+    ,ID
+    )
+SELECT
+RULE
+,ID
+FROM COUNTS
+WHERE
+MATCH_COUNT=NEEDED_COUNT
 }
 \examples{
 library(rpart)

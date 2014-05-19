@@ -1,10 +1,13 @@
 Package: rpart.utils
 Title: Tools for parsing and manipulating rpart objects, including generating
     machine readable rules.
-Version: 0.1
+Version: 0.5
 Author: Craig Varrichio <canthony427@gmail.com>
 Maintainer: Craig Varrichio <canthony427@gmail.com>
-Description: What the package does (paragraph)
+Description: This package contains additional tools for working with rpart
+    objects.  Most importantly, it includes methods for converting rpart rules
+    into a series of structured tables sufficient for executing the decision
+    tree completely in SQL.
 Depends:
     R (>= 3.1.0),
     rpart

@@ -1,4 +1,4 @@
-#' Creates lists of variable values (factor levels) associated with each rule in an rpart object.  
+#' Creates lists of variable values (factor levels) associated with each rule in an \code{\link{rpart}} object.  
 #'
 #'
 #' @param object an rpart object
@@ -15,6 +15,8 @@ rpart.lists <- function(object)
   n <- nrow(ff)
   if (n == 1L) return("root")            # special case of no splits
   
+  
+  ##This section  borrowed from the rpart source to identify the appropriate locations from the splits table.
   is.leaf <- (ff$var == "<leaf>")
   whichrow <- !is.leaf
   vnames <- ff$var[whichrow] # the variable names for the primary splits
@@ -22,15 +24,9 @@ rpart.lists <- function(object)
   index <- cumsum(c(1, ff$ncompete + ff$nsurrogate + !is.leaf))
   irow <- index[c(whichrow, FALSE)] # we only care about the primary split
   ncat <- object$splits[irow, 2L]
-  
-  lsplit <- rsplit <- list()
-
-  
-  ## Now to work: first create labels for the left and right splits,
-  ##  but not for leaves of course
   ##
-  #   
   
+  lsplit <- rsplit <- list()  
   
   if (any(ncat < 2L)) {               # any continuous vars ?
     jrow <- irow[ncat < 2L]
@@ -44,7 +40,6 @@ rpart.lists <- function(object)
     #rsplit[ncat<2L] <- lapply(rsplit[ncat<2L],function (x) structure(x, 'numeric'=TRUE))
     
   }
-
   
   if (any(ncat > 1L)) 
   {               # any categorical variables ?

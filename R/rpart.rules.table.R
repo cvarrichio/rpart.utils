@@ -11,8 +11,7 @@ rpart.rules.table<-function(object)
 {
   rules<-rpart.rules(object)
   ff<-object$frame
- ff$rules<-unlist(rules[as.numeric(row.names(ff))])
- # print(Reduce(cbind,lapply(ff,identity)))
+  ff$rules<-unlist(rules[as.numeric(row.names(ff))])
   ruleList<-lapply(row.names(ff),function (name) setNames(data.frame(name,
                                                                      (strsplit(ff[name,'rules'],split=',')),
                                                                      ff[name,'var']=="<leaf>"
