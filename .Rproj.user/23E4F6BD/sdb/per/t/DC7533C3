@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Creates lists of variable values (factor levels) associated with each rule in an \\pkg{rpart} object.  \n#'\n#'\n#' @param object an rpart object\n#' @return a list of lists\n#' @export\n#' @examples\n#' library(rpart)\n#' fit<-rpart(Reliability~.,data=car90)\n#' rpart.lists(fit)\nrpart.lists <- function(object)\n{\n  \n  ff <- object$frame\n  n <- nrow(ff)\n  if (n == 1L) return(\"root\")            # special case of no splits\n  \n  \n  ##This section  borrowed from the rpart source to identify the appropriate locations from the splits table.\n  is.leaf <- (ff$var == \"<leaf>\")\n  whichrow <- !is.leaf\n  vnames <- ff$var[whichrow] # the variable names for the primary splits\n  \n  index <- cumsum(c(1, ff$ncompete + ff$nsurrogate + !is.leaf))\n  irow <- index[c(whichrow, FALSE)] # we only care about the primary split\n  ncat <- object$splits[irow, 2L]\n  ##\n  \n  lsplit <- rsplit <- list()  \n  \n  if (any(ncat < 2L)) \n  {               # any continuous vars ?\n    \n    jrow <- irow[ncat < 2L]\n    cutpoint <- object$splits[jrow, 4L]\n    temp1 <- (ifelse(ncat < 0, \"<\", \">=\"))[ncat < 2L]\n    temp2 <- (ifelse(ncat < 0, \">=\", \"<\"))[ncat < 2L]\n    lsplit[ncat<2L] <- cutpoint\n    #lsplit[ncat<2L] <- lapply(lsplit[ncat<2L],function (x) structure(x, 'numeric'=TRUE))\n    \n    rsplit[ncat<2L] <- cutpoint\n    #rsplit[ncat<2L] <- lapply(rsplit[ncat<2L],function (x) structure(x, 'numeric'=TRUE))\n    \n  }\n  \n  if (any(ncat > 1L)) \n  {               # any categorical variables ?\n    xlevels <- attr(object, \"xlevels\")\n    ##\n    ## jrow will be the row numbers of factors within lsplit and rsplit\n    ## crow the row number in \"csplit\"\n    ## and cindex the index on the \"xlevels\" list\n    ##\n    jrow <- seq_along(ncat)[ncat > 1L]\n    crow <- object$splits[irow[ncat > 1L], 4L] #row number in csplit\n    cindex <- (match(vnames, names(xlevels)))[ncat > 1L]\n\n    \n    lsplit[jrow]<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==1L])\n    rsplit[jrow]<-lapply(seq_along(jrow),function (i) xlevels[[cindex[i]]][object$csplit[crow[i], ]==3L])\n\n  }\n\n\n  lsplit<-lapply(seq_along(lsplit), function (i) structure(lsplit[[i]], \"compare\"=ifelse(ncat[i]<2L,ifelse(ncat[i]<0,\"<\",\">=\"),\"=\")))\n  rsplit<-lapply(seq_along(lsplit), function (i) structure(rsplit[[i]], \"compare\"=ifelse(ncat[i]<2L,ifelse(ncat[i]<0,\">=\",\"<\"),\"=\")))\n  \n  \n  names(lsplit)<-vnames\n  names(rsplit)<-vnames\n  \n  results<-list(\"L\"=lsplit,\"R\"=rsplit)  \n\n  return(results)\n}",
+    "created" : 1400102663380.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3548515868",
+    "id" : "DC7533C3",
+    "lastKnownWriteTime" : 1400595024,
+    "path" : "~/Analytics/Source/rpart.utils/R/rpart.lists.R",
+    "project_path" : "R/rpart.lists.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

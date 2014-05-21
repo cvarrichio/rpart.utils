@@ -1,0 +1,16 @@
+{
+    "contents" : "#' Returns an unpivoted table of variable values (factor levels) associated with each branch.\n#'\n#' @param object an rpart object\n#' @export\n#' @examples\n#' library(rpart)\n#' fit<-rpart(Reliability~.,data=car90)\n#' rpart.subrules.table(fit)\nrpart.subrules.table<-function(object)  \n{\n  lists<-rpart.lists(object)\n  leftCompares<-lapply(lists$L,function (x) attr(x,\"compare\"))\n  rightCompares<-lapply(lists$R,function (x) attr(x,\"compare\"))\n  leftRules<-lapply(seq_along(lists$L),function (i) setNames(data.frame(paste('L',i,sep=''),names(lists$L)[i],as.character(unlist(lists$L[i],use.names=FALSE)),NA,NA),c(\"Subrule\",\"Variable\",\"Value\",\"Less\",\"Greater\")))\n  rightRules<-lapply(seq_along(lists$R),function (i) setNames(data.frame(paste('R',i,sep=''),names(lists$R)[i],as.character(unlist(lists$R[i]),use.names=FALSE),NA,NA),c(\"Subrule\",\"Variable\",\"Value\",\"Less\",\"Greater\")))\n  \n  reassign.columns<-function(object,compare)\n  {\n    if(grepl(\"<\",compare))\n      object$Less<-object$Value\n    if(grepl(\">\",compare))\n      object$Greater<-object$Value\n    if(!grepl(\"=\",compare))\n      object$Value=NA\n    return(object)\n  }\n  \n  leftTable<-Reduce(rbind,Map(reassign.columns, leftRules, leftCompares))\n  rightTable<-Reduce(rbind,Map(reassign.columns, rightRules, rightCompares))\n  \n  \n  return(rbind(leftTable,rightTable))\n}",
+    "created" : 1400104449563.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3270377334",
+    "id" : "92D338DF",
+    "lastKnownWriteTime" : 1400515369,
+    "path" : "~/Analytics/Source/rpart.utils/R/rpart.subrules.table.R",
+    "project_path" : "R/rpart.subrules.table.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

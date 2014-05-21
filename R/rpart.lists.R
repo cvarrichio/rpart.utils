@@ -1,4 +1,4 @@
-#' Creates lists of variable values (factor levels) associated with each rule in an \code{\link{rpart}} object.  
+#' Creates lists of variable values (factor levels) associated with each rule in an \pkg{rpart} object.  
 #'
 #'
 #' @param object an rpart object
@@ -28,7 +28,9 @@ rpart.lists <- function(object)
   
   lsplit <- rsplit <- list()  
   
-  if (any(ncat < 2L)) {               # any continuous vars ?
+  if (any(ncat < 2L)) 
+  {               # any continuous vars ?
+    
     jrow <- irow[ncat < 2L]
     cutpoint <- object$splits[jrow, 4L]
     temp1 <- (ifelse(ncat < 0, "<", ">="))[ncat < 2L]
