@@ -4,7 +4,7 @@
 #' @export
 #' @examples
 #' library(rpart)
-#' fit<-rpart(Reliability~.,data=car90)
+#' fit<-rpart(Reliability~.,data=car.test.frame)
 #' rpart.subrules.table(fit)
 rpart.subrules.table<-function(object)  
 {

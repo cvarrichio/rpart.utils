@@ -13,7 +13,7 @@ Returns a list of strings summarizing the branch path to each node.
 }
 \examples{
 library(rpart)
-fit<-rpart(Reliability~.,data=car90)
+fit<-rpart(Reliability~.,data=car.test.frame)
 rpart.rules(fit)
 }
 

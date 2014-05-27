@@ -1,12 +1,12 @@
 {
-    "contents" : "#' Returns a list of strings summarizing the branch path to each node.\n#'\n#'\n#' @param object an rpart object\n#' @export\n#' @examples\n#' library(rpart)\n#' fit<-rpart(Reliability~.,data=car90)\n#' rpart.rules(fit)\nrpart.rules<-function(object)\n{\n  frame<-object$frame\n  ruleNums<-as.numeric(row.names(frame))  ##Convert the row names into a list of rule numbers\n  is.leaf <- (frame$var == \"<leaf>\")\n  frame[!is.leaf,\"order\"]<-seq_along(which(!is.leaf)) ##Number the branches to number them for matching with subrule sets\n  rules<-replicate(max(ruleNums),NULL)\n  rules[1]<-\"NULL\"\n  \n  ##The rule numbering convention contains the information to determine branch lineage. \n  ##Most of the potential rule numbers don't actually exist, but this will result in the creation of a NULL rule.\n  for (i in as.numeric(row.names(frame))[-1])\n  {\n    if(i%%2==0)\n    {\n      rules[i]<-paste(rules[i/2],paste('L',frame[as.character(i/2),\"order\"],sep=''),sep=',')\n    }\n    else\n    {\n        rules[i]<-paste(rules[(i-1)/2],paste('R',frame[as.character((i-1)/2),\"order\"],sep=''),sep=',')\n    }\n  }\n  rules<-lapply(rules,function (x) gsub(\"NULL,\",'',x))\n  return(rules)\n}\n\n",
+    "contents" : "#' Returns a list of strings summarizing the branch path to each node.\n#'\n#'\n#' @param object an rpart object\n#' @export\n#' @examples\n#' library(rpart)\n#' fit<-rpart(Reliability~.,data=car.test.frame)\n#' rpart.rules(fit)\nrpart.rules<-function(object)\n{\n  frame<-object$frame\n  ruleNums<-as.numeric(row.names(frame))  ##Convert the row names into a list of rule numbers\n  is.leaf <- (frame$var == \"<leaf>\")\n  frame[!is.leaf,\"order\"]<-seq_along(which(!is.leaf)) ##Number the branches to number them for matching with subrule sets\n  rules<-replicate(max(ruleNums),NULL)\n  rules[1]<-\"NULL\"\n  \n  ##The rule numbering convention contains the information to determine branch lineage. \n  ##Most of the potential rule numbers don't actually exist, but this will result in the creation of a NULL rule.\n  for (i in as.numeric(row.names(frame))[-1])\n  {\n    if(i%%2==0)\n    {\n      rules[i]<-paste(rules[i/2],paste('L',frame[as.character(i/2),\"order\"],sep=''),sep=',')\n    }\n    else\n    {\n        rules[i]<-paste(rules[(i-1)/2],paste('R',frame[as.character((i-1)/2),\"order\"],sep=''),sep=',')\n    }\n  }\n  rules<-lapply(rules,function (x) gsub(\"NULL,\",'',x))\n  return(rules)\n}\n\n",
     "created" : 1400104241644.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "858435268",
+    "hash" : "418206478",
     "id" : "3339DF43",
-    "lastKnownWriteTime" : 1400507154,
+    "lastKnownWriteTime" : 1400771881,
     "path" : "~/Analytics/Source/rpart.utils/R/rpart.rules.R",
     "project_path" : "R/rpart.rules.R",
     "properties" : {

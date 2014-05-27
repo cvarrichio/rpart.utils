@@ -5,7 +5,7 @@
 #' @export
 #' @examples
 #' library(rpart)
-#' fit<-rpart(Reliability~.,data=car90)
+#' fit<-rpart(Reliability~.,data=car.test.frame)
 #' rpart.rules(fit)
 rpart.rules<-function(object)
 {

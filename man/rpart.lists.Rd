@@ -16,7 +16,7 @@ Creates lists of variable values (factor levels) associated with each rule in an
 }
 \examples{
 library(rpart)
-fit<-rpart(Reliability~.,data=car90)
+fit<-rpart(Reliability~.,data=car.test.frame)
 rpart.lists(fit)
 }
 

@@ -6,7 +6,7 @@
 #' @export
 #' @examples
 #' library(rpart)
-#' fit<-rpart(Reliability~.,data=car90)
+#' fit<-rpart(Reliability~.,data=car.test.frame)
 #' rpart.lists(fit)
 rpart.lists <- function(object)
 {

@@ -13,7 +13,7 @@ Returns an unpivoted table of branch paths (subrules) associated with each node.
 }
 \examples{
 library(rpart)
-fit<-rpart(Reliability~.,data=car90)
+fit<-rpart(Reliability~.,data=car.test.frame)
 rpart.rules.table(fit)
 }
 

@@ -13,7 +13,7 @@ Returns an unpivoted table of variable values (factor levels) associated with ea
 }
 \examples{
 library(rpart)
-fit<-rpart(Reliability~.,data=car90)
+fit<-rpart(Reliability~.,data=car.test.frame)
 rpart.subrules.table(fit)
 }
 

@@ -94,16 +94,24 @@
 rpart.rules.push<-function(object,connection,rulePrefix=NULL,tablePrefix=NULL)
 {
   require(RODBC)
+  rulePrefix<-paste2(rulePrefix,'',sep='.')
   rules<-rpart.rules.table(object)
-  rules$Rule<-paste(rulePrefix,rules$Rule,sep='.')
-  rules$Subrule<-paste(rulePrefix,rules$Subrule,sep='.')
-  sqlSave(connection,rules,tablename=paste(tablePrefix,"RULES",sep='_'),append=TRUE,rownames=FALSE)
+  rules$Rule<-paste(rulePrefix,rules$Rule,sep='')
+  rules$Subrule<-paste(rulePrefix,rules$Subrule,sep='')
+  sqlSave(connection,rules,tablename=paste2(tablePrefix,"RULES",sep='_'),append=TRUE,rownames=FALSE)
   subrules<-rpart.subrules.table(object)
-  subrules$Subrule<-paste(rulePrefix,subrules$Subrule,sep='.')
-  sqlSave(connection,subrules,tablename=paste(tablePrefix,"SUBRULES",sep='_'),append=TRUE,rownames=FALSE)
+  subrules$Subrule<-paste(rulePrefix,subrules$Subrule,sep='')
+  sqlSave(connection,subrules,tablename=paste2(tablePrefix,"SUBRULES",sep='_'),append=TRUE,rownames=FALSE)
   frame<-object$frame
   if (!is.null(frame$yval2))
-    frame<-cbind(frame[,names(frame) != "yval2"],frame$yval2)
-  frame$Rule<-paste(rulePrefix,row.names(frame),sep='.')
-  sqlSave(connection,frame,tablename=paste(tablePrefix,"FRAME",sep='_'),append=TRUE,rownames=FALSE)
+      frame<-cbind(frame[,names(frame) != "yval2"],frame$yval2)
+  frame$Rule<-paste(rulePrefix,row.names(frame),sep='')
+  sqlSave(connection,frame,tablename=paste2(tablePrefix,"FRAME",sep='_'),append=TRUE,rownames=FALSE)
+}
+
+paste2<-function(...,sep=' ')
+{
+  args<-unlist(list(...))
+  result<-paste(args,collapse=sep)
+  return(result)
 }
