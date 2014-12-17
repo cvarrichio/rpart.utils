@@ -77,7 +77,7 @@
 #'     ,ID
 #'     )
 #' SELECT 
-#' RULE
+#' [RULE]
 #' ,ID
 #' FROM COUNTS
 #' WHERE 
